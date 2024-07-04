@@ -1,0 +1,56 @@
+.container-fluid{
+    .footer{
+        padding-left: 0px !important;
+        padding-right: 0px  !important;
+    }
+    .container{
+        .row{
+            a{
+                text-decoration: none;
+            }
+            .card-hover {
+                position: relative;
+                overflow: hidden;
+            
+                .card-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.5);
+                    opacity: 0;
+                    transition: opacity 0.3s ease-in-out;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+            
+                    .play-icon {
+                        font-size: 3rem;
+                        color: white;
+                    }
+                }
+            
+                &:hover .card-overlay {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    .row{
+        .footer-color{
+            background-color: #ed5d9c !important;
+            padding: 20px;
+            a{
+                text-decoration: none;
+            }
+        }
+        h1{
+           
+            padding-left: 0px;
+            padding-right: 0px;
+            color: white;
+            text-align: center;
+        }
+    }
+}
