@@ -1,4 +1,73 @@
 .container-fluid {
+    .pagination-button {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    
+    .pagination-button:disabled {
+        background-color: #6c757d;
+        cursor: default;
+    }
+    .footer{
+        padding-left: 0px !important;
+        padding-right: 0px  !important;
+    }
+    .container{
+        .row{
+            a{
+                text-decoration: none;
+            }
+            .card-hover {
+                position: relative;
+                overflow: hidden;
+            
+                .card-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.5);
+                    opacity: 0;
+                    transition: opacity 0.3s ease-in-out;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+            
+                    .play-icon {
+                        font-size: 3rem;
+                        color: white;
+                    }
+                }
+            
+                &:hover .card-overlay {
+                    opacity: 1;
+                }
+            }
+            ul.pagination {
+                justify-content: center;
+                margin-top: 20px;
+                .page-link {
+                   color: #ee5e9d;
+                }
+                .page-item.active .page-link {
+                    background-color: #ee5e9d;
+                    border-color: #ee5e9d;
+                    color: #fff;
+                }
+            }
+            .active>.page-link, .page-link.active {
+                z-index: 3;
+                color: var(--bs-pagination-active-color);
+                background-color: #ee5e9d;
+                border-color: #ee5e9d;
+            }
+        }
+    }
     .row{
         img.mb-3{
             padding-right: 0px !important;
