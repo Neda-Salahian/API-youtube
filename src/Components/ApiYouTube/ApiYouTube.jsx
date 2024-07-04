@@ -5,18 +5,22 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Pagination from 'react-bootstrap/Pagination';
 //IMPORT SCSS
 import './ApiYouTube.scss';
-//IMPORT IMAHGES
+//IMPORT IMAGES
 import header from '../../assets/images/header.png';
 //IMPORT @MUI
 import CircularProgress from '@mui/joy/CircularProgress';
 import { Link } from "react-router-dom";
 //IMPORT COMPONENTS
 import Footer from "../Footer/Footer";
+
 function ApiYouTube() {
     const [videos, setVideos] = useState([]);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const videosPerPage = 8; // Number of videos to display per page
 
     useEffect(() => {
         const cachedVideos = localStorage.getItem('youtubeVideos');
@@ -46,6 +50,16 @@ function ApiYouTube() {
         return text.substr(0, maxLength) + '...';
     }
 
+    const indexOfLastVideo = currentPage * videosPerPage;
+    const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+    const currentVideos = videos.slice(indexOfFirstVideo, indexOfLastVideo);
+
+    const totalPages = Math.ceil(videos.length / videosPerPage);
+
+    function handleClick(pageNumber) {
+        setCurrentPage(pageNumber);
+    }
+
     return (
         <>
             <Container fluid>
@@ -55,29 +69,58 @@ function ApiYouTube() {
                 {error ? (
                     <p>{error.includes('quota') ? 'The request cannot be completed because you have exceeded your quota.' : error}</p>
                 ) : videos.length > 0 ? (
-                    <Container>
-                        <Row>
-                            {videos.map(video => (
-                                <Col md={3} key={video.id.videoId} >
-                                    <Link to={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank">
-                                        <Card className="mb-3 card-hover">
-                                            <div className="card-overlay">
-                                                <div className="play-icon">&#9658;</div>
-                                            </div>
-                                            <Card.Img variant="top" src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
-                                            <Card.Body>
-                                                <Card.Title>{truncateText(video.snippet.title, 50)}</Card.Title>
-                                                <Card.Text>
-                                                    {new Date(video.snippet.publishedAt).toLocaleDateString()}
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </Link>
-                                </Col>
-                            ))}
-                        </Row>
-                    </Container>
+                    <>
+                        <Container>
+                            <Row>
+                                {currentVideos.map(video => (
+                                    <Col md={3} key={video.id.videoId} >
+                                        <Link to={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank">
+                                            <Card className="mb-3 card-hover">
+                                                <div className="card-overlay">
+                                                    <div className="play-icon">&#9658;</div>
+                                                </div>
+                                                <Card.Img variant="top" src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
+                                                <Card.Body>
+                                                    <Card.Title>{truncateText(video.snippet.title, 50)}</Card.Title>
+                                                    <Card.Text>
+                                                        {new Date(video.snippet.publishedAt).toLocaleDateString()}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </Link>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Container>
+                        <Container>
+                            <Row className="justify-content-center">
+                                <Pagination>
+                                    <Pagination.First onClick={() => handleClick(1)} />
+                                    <Pagination.Prev 
+                                        onClick={() => handleClick(currentPage > 1 ? currentPage - 1 : 1)} 
+                                        disabled={currentPage === 1}
+                                    />
+                                    {Array.from({ length: totalPages }, (_, index) => (
+                                        <Pagination.Item
+                                            key={index}
+                                            onClick={() => handleClick(index + 1)}
+                                            active={currentPage === index + 1}
+                                        >
+                                            {index + 1}
+                                        </Pagination.Item>
+                                    ))}
+                                    <Pagination.Next 
+                                        onClick={() => handleClick(currentPage < totalPages ? currentPage + 1 : totalPages)}
+                                        disabled={currentPage === totalPages}
+                                    />
+                                    <Pagination.Last onClick={() => handleClick(totalPages)} />
+                                </Pagination>
+                            </Row>
 
+                        </Container>
+
+                        
+                    </>
                 ) : (
                     <CircularProgress
                         determinate={false}
@@ -88,7 +131,6 @@ function ApiYouTube() {
             </Container>
             <Footer />
         </>
-
     );
 }
 

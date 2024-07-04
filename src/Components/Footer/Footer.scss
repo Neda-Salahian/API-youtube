@@ -1,4 +1,17 @@
 .container-fluid{
+    .pagination-button {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    
+    .pagination-button:disabled {
+        background-color: #6c757d;
+        cursor: default;
+    }
     .footer{
         padding-left: 0px !important;
         padding-right: 0px  !important;
@@ -34,6 +47,16 @@
                 &:hover .card-overlay {
                     opacity: 1;
                 }
+            }
+            ul.pagination {
+                justify-content: center;
+                margin-top: 20px;
+            }
+            .active>.page-link, .page-link.active {
+                z-index: 3;
+                color: var(--bs-pagination-active-color);
+                background-color: #ee5e9d;
+                border-color: #ee5e9d;
             }
         }
     }
